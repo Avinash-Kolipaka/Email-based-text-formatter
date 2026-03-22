@@ -1,0 +1,30 @@
+{
+  "builds": [
+    {
+      "src": "app.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "index.html",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/format",
+      "dest": "/app.py"
+    },
+    {
+      "src": "/analyze",
+      "dest": "/app.py"
+    },
+    {
+      "src": "/templates",
+      "dest": "/app.py"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ]
+}

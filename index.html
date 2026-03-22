@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email Formatter Pro</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="background-decoration"></div>
+  <div class="animated-bg"></div>
+  
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="logo-icon">✉️</div>
+      <h1>Email Formatter Pro</h1>
+      <p class="subtitle">Transform your emails into perfectly formatted, professional messages</p>
+      <div class="header-badges">
+        <span class="badge">🚀 AI-Powered</span>
+        <span class="badge">📊 Analytics</span>
+        <span class="badge">📥 Export Ready</span>
+      </div>
+    </div>
+
+    <!-- Tabs Navigation -->
+    <div class="tabs-nav">
+      <button class="tab-btn active" data-tab="editor">✏️ Editor</button>
+      <button class="tab-btn" data-tab="templates">📚 Templates</button>
+      <button class="tab-btn" data-tab="analytics">📊 Analytics</button>
+    </div>
+
+    <!-- Editor Tab -->
+    <div id="editor" class="tab-content active">
+      <div class="split-container">
+        <!-- Input Panel -->
+        <div class="editor-panel input-panel">
+          <div class="panel-header">
+            <h3>📝 Raw Email</h3>
+            <span class="panel-hint">Paste your text here</span>
+          </div>
+          <textarea id="inputText" class="editor-textarea" placeholder="Paste your raw email text here..."></textarea>
+          <div class="panel-footer">
+            <span class="char-count"><span id="charCount">0</span> characters</span>
+            <button class="btn-small" onclick="clearInput()">Clear</button>
+          </div>
+        </div>
+
+        <!-- Output Panel -->
+        <div class="editor-panel output-panel">
+          <div class="panel-header">
+            <h3>✨ Formatted Email</h3>
+            <span class="panel-hint" id="subjectDisplay">Subject will appear here</span>
+          </div>
+          <div class="output-wrapper">
+            <div id="subjectLine" class="subject-line">Subject: </div>
+            <textarea id="outputText" class="editor-textarea" placeholder="Your formatted email will appear here..." readonly></textarea>
+          </div>
+          <div class="panel-footer">
+            <button class="btn-small" onclick="copyToClipboard()">📋 Copy</button>
+            <button class="btn-small" onclick="downloadEmail()">⬇️ Download</button>
+            <button class="btn-small" onclick="saveDraft()">💾 Save Draft</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Control Panel -->
+    <div class="control-panel">
+      <div class="control-row">
+        <div class="control-group">
+          <label class="label">Tone Style</label>
+          <select id="tone" class="select-control">
+            <option value="Formal">📋 Formal</option>
+            <option value="Friendly">😊 Friendly</option>
+            <option value="Apology">🤝 Apology</option>
+            <option value="Request">🙏 Request</option>
+            <option value="Follow-up">↩️ Follow-up</option>
+            <option value="Job Application">💼 Job Application</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label class="label">Email Length</label>
+          <select id="length" class="select-control">
+            <option value="Short">📌 Short</option>
+            <option value="Medium" selected>📄 Medium</option>
+            <option value="Detailed">📖 Detailed</option>
+          </select>
+        </div>
+
+        <div class="control-group checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="grammarCheck" checked>
+            ✓ Grammar Fix
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="politenessCheck" checked>
+            ✓ Enhance Politeness
+          </label>
+        </div>
+
+        <button class="format-btn" onclick="formatEmail()">✨ Format Email</button>
+      </div>
+    </div>
+
+    <!-- Templates Tab -->
+    <div id="templates" class="tab-content">
+      <div class="templates-grid" id="templatesGrid"></div>
+    </div>
+
+    <!-- Analytics Tab -->
+    <div id="analytics" class="tab-content">
+      <div class="analytics-container">
+        <div class="analytics-card">
+          <h4>📊 Readability Score</h4>
+          <div class="score-display" id="readabilityScore">--</div>
+          <div class="score-bar"><div class="score-fill" id="readabilityFill"></div></div>
+          <p class="score-label">How easy to read</p>
+        </div>
+
+        <div class="analytics-card">
+          <h4>🤝 Politeness Meter</h4>
+          <div class="score-display" id="politenessScore">--</div>
+          <div class="score-bar"><div class="score-fill" id="politenessFill"></div></div>
+          <p class="score-label">Courtesy level</p>
+        </div>
+
+        <div class="analytics-card">
+          <h4>🎯 Detected Tone</h4>
+          <div class="tone-display" id="detectedTone">Analyzing...</div>
+          <p class="score-label">Identified email tone</p>
+        </div>
+
+        <div class="analytics-card">
+          <h4>📈 Email Stats</h4>
+          <div class="stats-list">
+            <div class="stat-item">
+              <span>Words:</span>
+              <strong id="wordCount">0</strong>
+            </div>
+            <div class="stat-item">
+              <span>Sentences:</span>
+              <strong id="sentenceCount">0</strong>
+            </div>
+            <div class="stat-item">
+              <span>Characters:</span>
+              <strong id="charCountStat">0</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Action Panel -->
+  <div class="floating-panel">
+    <button class="float-btn main-btn" onclick="toggleFloatingMenu()" title="Quick Actions">⚡</button>
+    <div class="float-menu" id="floatMenu">
+      <button class="float-action" onclick="exportAsGmail()" title="Export to Gmail">📧</button>
+      <button class="float-action" onclick="exportAsOutlook()" title="Export to Outlook">📨</button>
+      <button class="float-action" onclick="exportAsPDF()" title="Export as PDF">📄</button>
+      <button class="float-action" onclick="viewDrafts()" title="View Drafts">📂</button>
+    </div>
+  </div>
+
+  <!-- Draft Manager Modal -->
+  <div id="draftModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>💾 Saved Drafts</h3>
+        <button class="close-btn" onclick="closeDraftModal()">&times;</button>
+      </div>
+      <div class="drafts-list" id="draftsList"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
